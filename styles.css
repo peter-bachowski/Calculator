@@ -1,0 +1,73 @@
+body, html {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#calcContainer {
+  width: 300px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+#screen {
+  height: 100px;
+  width: auto;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+
+#numContainer {
+  width: 180px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 5px;
+}
+
+#operatorContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+#numAndOperatorContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+#clearBtn {
+  width: 100px;
+}
+
+#clearBtnArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.num {
+  width: 50px;
+  height: 50px;
+}
+
+.operator {
+  width: 50px;
+  height: 30px;
+}
+
+#equals {
+  height: 50px;
+}
