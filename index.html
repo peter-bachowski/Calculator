@@ -7,12 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My First Calculator!</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <div id="calcContainer">
   <div id="screen"></div>
   <div id="clearBtnArea">
-    <button id="clearBtn">Clear</button>  
+    <button id="clearBtn">Clear</button>
   </div>
   <div id="numAndOperatorContainer">
     <div id="numContainer">
@@ -30,10 +30,10 @@
       <button class="num" id="negative">(-)</button>
     </div>
     <div id="operatorContainer">
-      <button class="operator" id="plus">+</button>
-      <button class="operator" id="minus">-</button>
-      <button class="operator" id="multiply">x</button>
       <button class="operator" id="divide">÷</button>
+      <button class="operator" id="multiply">x</button>
+      <button class="operator" id="minus">-</button>
+      <button class="operator" id="plus">+</button>
       <button class="operator" id="equals">=</button>
     </div>
   </div>
