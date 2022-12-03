@@ -2,18 +2,26 @@ const buttonElements = document.querySelectorAll("button"), zeroBtn = document.g
   screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
   negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), addBtn = document.getElementById("add"), subtractBtn = document.getElementById("subtract"), multiplyBtn = document.getElementById("multiply"), divideBtn = document.getElementById("divide");
 
-let firstNum = 0, secondNum = 0;
+let firstNum = 0, secondNum = 0, equalsPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
   buttonElements[i].onclick = function() {
+    if (equalsPressed === true) {
+      clear();
+    }
     screen.innerText += document.getElementById(this.id).innerText;
+    equalsPressed = false;
   }
 }
 
-clearBtn.onclick = function() {
+function clear() {
   screen.innerText = null;
   firstNum = 0;
   secondNum = 0;
+}
+
+clearBtn.onclick = function() {
+  clear()
 }
 
 negativeBtn.onclick = function() {
@@ -22,60 +30,53 @@ negativeBtn.onclick = function() {
   }
 }
 
-addBtn.onclick = function() {
+function getNum(button) {
+  equalsPressed = false;
   firstNum = parseFloat(screen.innerText);
-  screen.innerText += document.getElementById(this.id).innerText;
+  screen.innerText += document.getElementById(button.id).innerText;
+}
+
+addBtn.onclick = function() {
+  getNum(addBtn);
 }
 
 subtractBtn.onclick = function() {
-  firstNum = parseFloat(screen.innerText);
-  screen.innerText += document.getElementById(this.id).innerText;
+  getNum(subtractBtn);
 }
 
 multiplyBtn.onclick = function() {
-  firstNum = parseFloat(screen.innerText);
-  screen.innerText += document.getElementById(this.id).innerText;
+  getNum(multiplyBtn);
 }
 
 divideBtn.onclick = function() {
-  firstNum = parseFloat(screen.innerText);
-  screen.innerText += document.getElementById(this.id).innerText;
+  getNum(divideBtn);
 }
 
-
-function add(position, expression) {
+function scanExpression(position, expression) {
   let secondNumString = "";
   for (j = position + 1; j < expression.length; j++) {
     secondNumString += expression.charAt(j);
   }
   secondNum = parseFloat(secondNumString);
+}
+
+function add(position, expression) {
+  scanExpression(position, expression);
   screen.innerText = secondNum + firstNum;
 }
 
 function subtract(position, expression) {
-  let secondNumString = "";
-  for (j = position + 1; j < expression.length; j++) {
-    secondNumString += expression.charAt(j);
-  }
-  secondNum = parseFloat(secondNumString);
+  scanExpression(position, expression)
   screen.innerText = firstNum - secondNum;
 }
 
 function multiply(position, expression) {
-  let secondNumString = "";
-  for (j = position + 1; j < expression.length; j++) {
-    secondNumString += expression.charAt(j);
-  }
-  secondNum = parseFloat(secondNumString);
+  scanExpression(position, expression)
   screen.innerText = firstNum * secondNum;
 }
 
 function divide(position, expression) {
-  let secondNumString = "";
-  for (j = position + 1; j < expression.length; j++) {
-    secondNumString += expression.charAt(j);
-  }
-  secondNum = parseFloat(secondNumString);
+  scanExpression(position, expression)
   screen.innerText = firstNum / secondNum;
 }
 
@@ -87,18 +88,19 @@ equalsBtn.onclick = function() {
       break;
     }
     else if (expression.charAt(i) === "-" && i != 0) {
-    subtract(i, expression);
-    break;
+      subtract(i, expression);
+      break;
     }
     else if (expression.charAt(i) === "x" && i != 0) {
-    multiply(i, expression);
-    break;
+      multiply(i, expression);
+      break;
     }
     else if (expression.charAt(i) === "÷" && i != 0) {
-    divide(i, expression);
-    break;
+      divide(i, expression);
+      break;
     }
   }
+  equalsPressed = true;
 }
 
 
