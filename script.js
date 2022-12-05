@@ -1,8 +1,10 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
   screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
-  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), addBtn = document.getElementById("add"), subtractBtn = document.getElementById("subtract"), multiplyBtn = document.getElementById("multiply"), divideBtn = document.getElementById("divide");
+  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), 
+  addBtn = document.getElementById("add"), subtractBtn = document.getElementById("subtract"), 
+  multiplyBtn = document.getElementById("multiply"), divideBtn = document.getElementById("divide");
 
-let firstNum = 0, secondNum = 0, equalsPressed = false;
+let firstNum = 0; secondNum = 0, equalsPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
   buttonElements[i].onclick = function() {
@@ -82,8 +84,13 @@ function divide(position, expression) {
 
 equalsBtn.onclick = function() {
   let expression = screen.innerText;
-  for (i = 0; i < expression.length; i++) {
-    if (expression.charAt(i) === "+") {
+  screen.innerText = recurseExpression(expression);
+  /*for (i = expression.length - 1; i >= 0; i--) {
+    if(isNaN(expression.charAt(expression.length-1))){
+      screen.innerText = "Error!";
+      break;
+    }
+    else if (expression.charAt(i) === "+") {
       add(i, expression);
       break;
     }
@@ -100,8 +107,54 @@ equalsBtn.onclick = function() {
       break;
     }
   }
-  equalsPressed = true;
+  equalsPressed = true;*/
 }
+
+function recurseExpression(expression){
+  let secondNum = 0, firstNum = 0, hasOperator = true;
+  for(i = expression.length - 1; i >= 0; i--){
+    if(expression.charAt(i) === "+"){
+      hasOperator = true;
+      firstNum = parseFloat(expression.slice(i+1, expression.length));
+      expression = expression.slice(0, i);
+      secondNum = recurseExpression(expression);
+      secondNum = secondNum + firstNum;
+      break;
+    }
+    else if(expression.charAt(i) === "-"){
+      hasOperator = true;
+      firstNum = parseFloat(expression.slice(i+1, expression.length));
+      expression = expression.slice(0, i);
+      secondNum = recurseExpression(expression);
+      secondNum = secondNum - firstNum;
+      break;
+    }
+    else if(expression.charAt(i) === "x"){
+      hasOperator = true;
+      firstNum = parseFloat(expression.slice(i+1, expression.length));
+      expression = expression.slice(0, i);
+      secondNum = recurseExpression(expression);
+      secondNum = secondNum * firstNum;
+      break;
+    }
+    else if(expression.charAt(i) === "÷"){
+      hasOperator = true;
+      firstNum = parseFloat(expression.slice(i+1, expression.length));
+      expression = expression.slice(0, i);
+      secondNum = recurseExpression(expression);
+      secondNum = secondNum / firstNum;
+      break;
+    }
+    else {
+      hasOperator = false;
+    }
+  }
+  if(hasOperator === false){
+    secondNum = expression;
+  }
+  return parseFloat(secondNum);
+}
+
 
 
 
