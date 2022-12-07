@@ -1,7 +1,7 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
   screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
-  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), 
-  addBtn = document.getElementById("add"), subtractBtn = document.getElementById("subtract"), 
+  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"),
+  addBtn = document.getElementById("add"), subtractBtn = document.getElementById("subtract"),
   multiplyBtn = document.getElementById("multiply"), divideBtn = document.getElementById("divide");
 
 let firstNum = 0; secondNum = 0, equalsPressed = false;
@@ -31,7 +31,7 @@ negativeBtn.onclick = function() {
     screen.innerText = (-1) * parseInt(screen.innerText);
   }
 }
-
+/*
 function getNum(button) {
   equalsPressed = false;
   firstNum = parseFloat(screen.innerText);
@@ -80,11 +80,11 @@ function multiply(position, expression) {
 function divide(position, expression) {
   scanExpression(position, expression)
   screen.innerText = firstNum / secondNum;
-}
+}*/
 
 equalsBtn.onclick = function() {
   let expression = screen.innerText;
-  screen.innerText = recurseExpression(expression);
+  screen.innerText = operate(expression);
   /*for (i = expression.length - 1; i >= 0; i--) {
     if(isNaN(expression.charAt(expression.length-1))){
       screen.innerText = "Error!";
@@ -109,50 +109,55 @@ equalsBtn.onclick = function() {
   }
   equalsPressed = true;*/
 }
+function scanFirstNum(position, expression) {
+  for (i = position - 1; i >= 0; i--) {
+    let char = expression.charAt(i);
+    if (char === "+" || char === "-" || char === "x" || char === "÷") {
+      return parseFloat(expression.slice(i + 1, position))
+    }
+    else {
+      return parseFloat(expression.slice(i, position));
+    }
+  }
+}
 
-function recurseExpression(expression){
-  let secondNum = 0, firstNum = 0, hasOperator = true;
-  for(i = expression.length - 1; i >= 0; i--){
-    if(expression.charAt(i) === "+"){
+function scanSecondNum(position, expression) {
+  for (i = position + 1; i < expression.length; i--) {
+    let char = expression.charAt(i);
+    if (char === "+" || char === "-" || char === "x" || char === "÷") {
+      return parseFloat(expression.slice(position + 1, i))
+    }
+    else {
+      return parseFloat(expression.slice(position + 1, expression.length));
+    }
+  }
+}
+
+function operate(expression) {
+  let secondNum = 0, firstNum = 0, newNum = 0, hasOperator = true;
+  for (i = expression.length - 1; i >= 0; i--) {
+    let char = expression.charAt(i);
+    if (char === "x" || char === "÷") {
       hasOperator = true;
-      firstNum = parseFloat(expression.slice(i+1, expression.length));
-      expression = expression.slice(0, i);
-      secondNum = recurseExpression(expression);
-      secondNum = secondNum + firstNum;
+      firstNum = scanFirstNum(i, expression);
+      secondNum = scanSecondNum(i, expression);
+      if (char === "x") {
+        newNum = secondNum * firstNum;
+      }
+      else if (char === "÷") {
+        newNum = firstNum / secondNum;
+      }
       break;
     }
-    else if(expression.charAt(i) === "-"){
-      hasOperator = true;
-      firstNum = parseFloat(expression.slice(i+1, expression.length));
-      expression = expression.slice(0, i);
-      secondNum = recurseExpression(expression);
-      secondNum = secondNum - firstNum;
-      break;
-    }
-    else if(expression.charAt(i) === "x"){
-      hasOperator = true;
-      firstNum = parseFloat(expression.slice(i+1, expression.length));
-      expression = expression.slice(0, i);
-      secondNum = recurseExpression(expression);
-      secondNum = secondNum * firstNum;
-      break;
-    }
-    else if(expression.charAt(i) === "÷"){
-      hasOperator = true;
-      firstNum = parseFloat(expression.slice(i+1, expression.length));
-      expression = expression.slice(0, i);
-      secondNum = recurseExpression(expression);
-      secondNum = secondNum / firstNum;
-      break;
-    }
+
     else {
       hasOperator = false;
     }
   }
-  if(hasOperator === false){
+  if (hasOperator === false) {
     secondNum = expression;
   }
-  return parseFloat(secondNum);
+  return newNum;
 }
 
 
