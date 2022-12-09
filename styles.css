@@ -9,6 +9,10 @@ body, html {
   color: inherit;
 }
 
+button {
+  font-size: 25px;
+}
+
 #calcContainer {
   width: 400px;
   height: 600px;
@@ -76,9 +80,9 @@ body, html {
 
 .operator {
   width: 70px;
-  height: 35px;
+  height: 40px;
 }
 
 #equals {
-  height: 50px;
+  height: 55px;
 }

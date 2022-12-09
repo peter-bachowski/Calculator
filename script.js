@@ -1,6 +1,7 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
   screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
-  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), dotBtn = document.getElementById("dot");
+  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), 
+  dotBtn = document.getElementById("dot"), backBtn = document.getElementById("back");
 
 let equalsPressed = false, dotPressed = false;
 
@@ -32,6 +33,7 @@ for (i = 0; i < buttonElements.length; i++) {
 function clear() {
   screen.innerText = null;
 }
+
 clearBtn.onclick = function() {
   clear()
 }
@@ -40,6 +42,12 @@ negativeBtn.onclick = function() {//fix this function
   if (screen.innerText != 0) {
     screen.innerText = (-1) * parseInt(screen.innerText);
   }
+}
+
+backBtn.onclick = function() {
+  let expression = screen.innerText;
+  expression = expression.slice(0, expression.length - 1);
+  screen.innerText = expression;
 }
 
 equalsBtn.onclick = function() {
