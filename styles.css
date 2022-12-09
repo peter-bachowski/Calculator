@@ -6,11 +6,12 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: inherit;
 }
 
 #calcContainer {
-  width: 250px;
-  height: 400px;
+  width: 400px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,7 +33,7 @@ body, html {
 }
 
 #numContainer {
-  width: 180px;
+  width: 250px;
   height: auto;
   display: flex;
   justify-content: center;
@@ -58,6 +59,8 @@ body, html {
 
 #clearBtn {
   width: 100px;
+  height: 40px;
+  margin-bottom: 30px;
 }
 
 #clearBtnArea {
@@ -67,13 +70,13 @@ body, html {
 }
 
 .num {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
 }
 
 .operator {
-  width: 50px;
-  height: 30px;
+  width: 70px;
+  height: 35px;
 }
 
 #equals {
