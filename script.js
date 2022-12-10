@@ -1,13 +1,13 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
   screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
-  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"), 
+  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"),
   dotBtn = document.getElementById("dot"), backBtn = document.getElementById("back");
 
 let equalsPressed = false, dotPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
   buttonElements[i].onclick = function() {
-    if (equalsPressed === true && this.className != "operator") {
+    if (equalsPressed === true && this.className === "num" && this.id != "dot") {
       clear();
     }
     if (this.id === "dot") {
@@ -15,7 +15,7 @@ for (i = 0; i < buttonElements.length; i++) {
         screen.innerText += "";
       }
       else {
-        screen.innerText += document.getElementById(this.id).innerText;
+        screen.innerText += document.getElementById(this.id).innerText + " ";
         dotPressed = true;
       }
     }
@@ -32,6 +32,7 @@ for (i = 0; i < buttonElements.length; i++) {
 
 function clear() {
   screen.innerText = null;
+  dotPressed = false;
 }
 
 clearBtn.onclick = function() {
@@ -46,8 +47,12 @@ negativeBtn.onclick = function() {//fix this function
 
 backBtn.onclick = function() {
   let expression = screen.innerText;
+  let char = expression.slice(expression.length - 1, expression.length);
   expression = expression.slice(0, expression.length - 1);
   screen.innerText = expression;
+  if (char === ".") {
+    dotPressed = false;
+  }
 }
 
 equalsBtn.onclick = function() {
@@ -78,7 +83,7 @@ function scanSecondNum(position, expression) {
 
 function operate(expression) {
   let secondNum = 0, firstNum = 0, result = 0, hasOperator = true;
-  expression = expression.trim();
+  //expression = expression.trim();
   for (position = 0; position < expression.length; position++) { //first for loop searches the expression for multiplication or division
     let char = expression.charAt(position);
     if (char === "x" || char === "÷") {
