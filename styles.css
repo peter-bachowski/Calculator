@@ -14,7 +14,7 @@ button {
 }
 
 #calcContainer {
-  width: 400px;
+  width: 380px;
   height: 600px;
   display: flex;
   flex-direction: column;

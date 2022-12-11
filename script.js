@@ -7,7 +7,7 @@ let equalsPressed = false, dotPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
   buttonElements[i].onclick = function() {
-    if (equalsPressed === true && this.className === "num" && this.id != "dot") {
+    if (equalsPressed === true && this.className === "num" && this.id != "negative") {
       clear();
     }
     if (this.id === "dot") {
@@ -17,6 +17,7 @@ for (i = 0; i < buttonElements.length; i++) {
       else {
         screen.innerText += document.getElementById(this.id).innerText + " ";
         dotPressed = true;
+        equalsPressed = false;
       }
     }
     else {
@@ -40,9 +41,7 @@ clearBtn.onclick = function() {
 }
 
 negativeBtn.onclick = function() {//fix this function
-  if (screen.innerText != 0) {
-    screen.innerText = (-1) * parseInt(screen.innerText);
-  }
+  screen.innerText = (-1) * parseInt(screen.innerText);
 }
 
 backBtn.onclick = function() {
@@ -53,18 +52,28 @@ backBtn.onclick = function() {
   if (char === ".") {
     dotPressed = false;
   }
+  equalsPressed = false;
 }
 
 equalsBtn.onclick = function() {
   let expression = screen.innerText;
   screen.innerText = operate(expression);
+  expression = screen.innerText;
+  for(i = 0; i <= expression.length; i++){
+    if(expression.charAt(i) === "."){
+      dotPressed = true;
+    }
+  }
   equalsPressed = true;
 }
 
 function scanFirstNum(position, expression) {
   for (j = position - 1; j >= 0; j--) {
     let char = expression.charAt(j);
-    if (j != 0 && (char === "+" || char === "-" || char === "x" || char === "÷")) {
+    if (j != 0 && (char === "+" || char === "-" || char === "×" || char === "÷")) {
+      if(expression.charAt(j - 1) === "e"){
+        continue;
+      }
       return parseFloat(expression.slice(j + 1, position));
     }
   }
@@ -74,7 +83,7 @@ function scanFirstNum(position, expression) {
 function scanSecondNum(position, expression) {
   for (k = position + 1; k < expression.length; k++) {
     let char = expression.charAt(k);
-    if (char === "+" || char === "-" || char === "x" || char === "÷") {
+    if (char === "+" || char === "-" || char === "×" || char === "÷") {
       return parseFloat(expression.slice(position + 1, k))
     }
   }
@@ -83,14 +92,13 @@ function scanSecondNum(position, expression) {
 
 function operate(expression) {
   let secondNum = 0, firstNum = 0, result = 0, hasOperator = true;
-  //expression = expression.trim();
   for (position = 0; position < expression.length; position++) { //first for loop searches the expression for multiplication or division
     let char = expression.charAt(position);
-    if (char === "x" || char === "÷") {
+    if (char === "×" || char === "÷") {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
       secondNum = scanSecondNum(position, expression);
-      if (char === "x") {
+      if (char === "×") {
         result = firstNum * secondNum;
       }
       else if (char === "÷") {
@@ -108,6 +116,9 @@ function operate(expression) {
   }
   for (position = 0; position < expression.length; position++) {//second for loop searches the expression for addition or subtraction
     let char = expression.charAt(position);
+    if(char === "e"){
+      return result;
+    }
     if (position != 0 && (char === "+" || char === "-")) {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
@@ -125,7 +136,7 @@ function operate(expression) {
       hasOperator = false;
     }
   }
-  return result;
+  return Math.round(result * 100000000) / 100000000;
 }
 
 
