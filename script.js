@@ -59,8 +59,8 @@ equalsBtn.onclick = function() {
   let expression = screen.innerText;
   screen.innerText = operate(expression);
   expression = screen.innerText;
-  for(i = 0; i <= expression.length; i++){
-    if(expression.charAt(i) === "."){
+  for (i = 0; i <= expression.length; i++) {
+    if (expression.charAt(i) === ".") {
       dotPressed = true;
     }
   }
@@ -71,7 +71,7 @@ function scanFirstNum(position, expression) {
   for (j = position - 1; j >= 0; j--) {
     let char = expression.charAt(j);
     if (j != 0 && (char === "+" || char === "-" || char === "×" || char === "÷")) {
-      if(expression.charAt(j - 1) === "e"){
+      if (expression.charAt(j - 1) === "e") {
         continue;
       }
       return parseFloat(expression.slice(j + 1, position));
@@ -116,7 +116,7 @@ function operate(expression) {
   }
   for (position = 0; position < expression.length; position++) {//second for loop searches the expression for addition or subtraction
     let char = expression.charAt(position);
-    if(char === "e"){
+    if (char === "e") {
       return result;
     }
     if (position != 0 && (char === "+" || char === "-")) {
