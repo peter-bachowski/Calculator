@@ -1,5 +1,5 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
-  screen = document.getElementById("screen"), clearBtn = document.getElementById("clearBtn"),
+  expressionDisplay = document.getElementById("expressionDisplay"), clearBtn = document.getElementById("clearBtn"), expressionMemory = document.getElementById("expressionMemory"),
   negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"),
   dotBtn = document.getElementById("dot"), backBtn = document.getElementById("back");
 
@@ -12,16 +12,16 @@ for (i = 0; i < buttonElements.length; i++) {
     }
     if (this.id === "dot") {
       if (dotPressed === true) {
-        screen.innerText += "";
+        expressionDisplay.innerText += "";
       }
       else {
-        screen.innerText += document.getElementById(this.id).innerText + " ";
+        expressionDisplay.innerText += document.getElementById(this.id).innerText + " ";
         dotPressed = true;
         equalsPressed = false;
       }
     }
     else {
-      screen.innerText += document.getElementById(this.id).innerText;
+      expressionDisplay.innerText += document.getElementById(this.id).innerText;
       equalsPressed = false;
       if (this.className === "operator") {
         dotBtn.setAttribute("id", "dot");
@@ -32,7 +32,7 @@ for (i = 0; i < buttonElements.length; i++) {
 }
 
 function clear() {
-  screen.innerText = null;
+  expressionDisplay.innerText = null;
   dotPressed = false;
 }
 
@@ -41,14 +41,14 @@ clearBtn.onclick = function() {
 }
 
 negativeBtn.onclick = function() {//fix this function
-  screen.innerText = (-1) * parseInt(screen.innerText);
+  expressionDisplay.innerText = (-1) * parseInt(expressionDisplay.innerText);
 }
 
 backBtn.onclick = function() {
-  let expression = screen.innerText;
+  let expression = expressionDisplay.innerText;
   let char = expression.slice(expression.length - 1, expression.length);
   expression = expression.slice(0, expression.length - 1);
-  screen.innerText = expression;
+  expressionDisplay.innerText = expression;
   if (char === ".") {
     dotPressed = false;
   }
@@ -56,9 +56,15 @@ backBtn.onclick = function() {
 }
 
 equalsBtn.onclick = function() {
-  let expression = screen.innerText;
-  screen.innerText = operate(expression);
-  expression = screen.innerText;
+  let expression = expressionDisplay.innerText;
+  const expressionUsed = document.createElement("div");
+  expressionUsed.innerText = "= " + expression;
+  expressionMemory.appendChild(expressionUsed);
+
+  let result = operate(expression);
+  expressionUsed.innerText = expression + " = " + result;
+  expressionDisplay.innerText = result
+  expression = expressionDisplay.innerText;
   for (i = 0; i <= expression.length; i++) {
     if (expression.charAt(i) === ".") {
       dotPressed = true;
@@ -136,7 +142,12 @@ function operate(expression) {
       hasOperator = false;
     }
   }
-  return Math.round(result * 100000000) / 100000000;
+  if (hasOperator === false) {
+    return expression;
+  }
+  else {
+    return Math.round(result * 100000000) / 100000000;
+  }
 }
 
 

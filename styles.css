@@ -27,10 +27,29 @@ body, html {
   border: 1px solid black;
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 30px;
   margin-top: 10px;
+}
+
+#expressionMemory {
+  height: 100%;
+  width: 100%;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow-y: auto;
+}
+
+#expressionDisplay {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #numContainer {
