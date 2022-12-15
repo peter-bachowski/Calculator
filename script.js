@@ -40,8 +40,16 @@ clearBtn.onclick = function() {
   clear()
 }
 
-negativeBtn.onclick = function() {//fix this function
-  expressionDisplay.innerText = (-1) * parseInt(expressionDisplay.innerText);
+negativeBtn.onclick = function() {
+  let expression = expressionDisplay.innerText;
+  let lastChar = expression.charAt(expression.length - 1);
+  if (isNaN(lastChar) && lastChar != ".") {
+    return;
+  }
+  else {
+    
+    expressionDisplay.innerText = (-1) * parseInt(expressionDisplay.innerText);
+  }
 }
 
 backBtn.onclick = function() {
@@ -63,6 +71,7 @@ equalsBtn.onclick = function() {
 
   let result = operate(expression);
   expressionUsed.innerText = expression + " = " + result;
+  expressionMemory.style.overflowY = "scroll";
   expressionDisplay.innerText = result
   expression = expressionDisplay.innerText;
   for (i = 0; i <= expression.length; i++) {

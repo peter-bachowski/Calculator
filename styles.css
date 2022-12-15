@@ -6,12 +6,12 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: inherit;
 }
 
 #calcContainer {
   width: 380px;
   height: auto;
+  background-color: #2e2929;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,10 +19,11 @@ body, html {
   border: 1px solid black;
   padding-left: 10px;
   padding-right: 10px;
+  border-radius: 30px;
 }
 
 #screen {
-  height: 200px;
+  height: auto;
   width: auto;
   border: 1px solid black;
   margin-bottom: 10px;
@@ -30,26 +31,33 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
-  margin-top: 10px;
+  margin-top: 20px;
+  border-radius: 50px;
 }
 
 #expressionMemory {
-  height: 100%;
+  height: 150px;
   width: 100%;
-  background-color: lightgray;
+  font-size: 20px;
+  background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow-y: auto;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 
 #expressionDisplay {
-  height: 40%;
+  height: 60px;
   width: 100%;
+  font-size: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 #numContainer {
@@ -60,14 +68,14 @@ body, html {
   align-content: center;
   flex-wrap: wrap;
   padding: 10px;
-  gap: 5px;
+  gap: 3px;
 }
 
 #operatorContainer {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   padding: 10px;
 }
 
@@ -75,12 +83,13 @@ body, html {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 #clearBtn {
   width: 100px;
   height: 40px;
-  margin-bottom: 30px;
+  margin: 10px;
 }
 
 #clearBtnArea {
@@ -101,6 +110,11 @@ body, html {
 
 #equals {
   height: 55px;
+  background-color: #c2840f;
+}
+
+#equals:hover {
+  background-color: #f2bb54;
 }
 
 button {
@@ -108,10 +122,12 @@ button {
   border-radius: 0px;
   border: 1px solid black;
   transition-duration: 0.1s;
+  background-color: #4f4f4f;
+  color: white;
 }
 
 button:hover {
-  background-color: white;
+  background-color: #e3e3e3;
   color: black;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.24), 0 2px 2px 0 rgba(0,0,0,0.19);
 }
