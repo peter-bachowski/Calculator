@@ -44,11 +44,11 @@ negativeBtn.onclick = function() {
   let expression = expressionDisplay.innerText;
   let lastChar = expression.charAt(expression.length - 1);
   if (isNaN(lastChar) && lastChar != ".") {
-    return;
+    expressionDisplay.innerText += "-";
   }
   else {
     
-    expressionDisplay.innerText = (-1) * parseInt(expressionDisplay.innerText);
+    expressionDisplay.innerText = -parseInt(expressionDisplay.innerText);
   }
 }
 
@@ -112,7 +112,13 @@ function operate(expression) {
     if (char === "×" || char === "÷") {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
-      secondNum = scanSecondNum(position, expression);
+
+      if (expression.charAt(position + 1) === "-") {
+        secondNum = -scanSecondNum(position + 1, expression)
+      }
+      else {
+        secondNum = scanSecondNum(position, expression);
+      }
       if (char === "×") {
         result = firstNum * secondNum;
       }
@@ -137,7 +143,12 @@ function operate(expression) {
     if (position != 0 && (char === "+" || char === "-")) {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
-      secondNum = scanSecondNum(position, expression);
+      if (expression.charAt(position + 1) === "-") {
+        secondNum = -scanSecondNum(position + 1, expression)
+      }
+      else {
+        secondNum = scanSecondNum(position, expression);
+      }
       if (char === "+") {
         result = firstNum + secondNum;
       }
