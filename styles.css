@@ -116,6 +116,10 @@ body, html {
   background-color: #f2bb54;
 }
 
+#expressionUsed:hover {
+  background-color:#4f4f4f;
+}
+
 button {
   font-size: 25px;
   border-radius: 0px;
