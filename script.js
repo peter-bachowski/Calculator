@@ -43,10 +43,10 @@ clearBtn.onclick = function() {
 negativeBtn.onclick = function() {
   let expression = expressionDisplay.innerText;
   let lastChar = expression.charAt(expression.length - 1);
-  for(i = 0; i <= expression.length - 1; i++){
+  for (i = 0; i <= expression.length - 1; i++) {
     let char = expression.charAt(i);
-    if(char === "+" || char === "-" || char === "×" || char === "÷"){
-      if(i === 0){
+    if (char === "+" || char === "-" || char === "×" || char === "÷") {
+      if (i === 0) {
         continue;
       }
       expressionDisplay.innerText += "-";
@@ -73,11 +73,11 @@ equalsBtn.onclick = function() {
   expressionUsed.innerText = "= " + expression;
   expressionUsed.id = "expressionUsed";
   expressionMemory.appendChild(expressionUsed);
-  expressionUsed.onclick = function(){
-    for(i = expressionUsed.length - 1; i >= 0; i--){
-      let char = expressionUsed.charAt(i);
-      if(char === "="){
-        expressionDisplay.innerText = expressionUsed.slice(0, i);
+  expressionUsed.onclick = function() {
+    for (i = expressionUsed.innerText.length - 1; i >= 0; i--) {
+      let char = expressionUsed.innerText.charAt(i);
+      if (char === "=") {
+        expressionDisplay.innerText = expressionUsed.innerText.slice(0, i - 1);
       }
     }
   }
