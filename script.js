@@ -81,6 +81,7 @@ equalsBtn.onclick = function() {
       }
     }
   }
+
   let result = operate(expression);
   expressionUsed.innerText = expression + " = " + result;
   expressionMemory.style.overflowY = "scroll";
@@ -136,7 +137,7 @@ function operate(expression) {
       }
       else if (char === "÷") {
         if (secondNum === 0) {
-          return "Can't divide by zero bruh";
+          return "Undefined";
         }
         result = firstNum / secondNum;
       }
@@ -175,7 +176,7 @@ function operate(expression) {
     }
   }
   if (hasOperator === false) {
-    return expression;
+    return Math.round(parseFloat(expression) * 100000000) / 100000000;
   }
   else {
     return Math.round(result * 100000000) / 100000000;
