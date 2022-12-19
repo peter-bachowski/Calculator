@@ -42,7 +42,6 @@ clearBtn.onclick = function() {
 
 negativeBtn.onclick = function() {
   let expression = expressionDisplay.innerText;
-  let lastChar = expression.charAt(expression.length - 1);
   for (i = 0; i <= expression.length - 1; i++) {
     let char = expression.charAt(i);
     if (char === "+" || char === "-" || char === "×" || char === "÷") {
@@ -73,6 +72,7 @@ equalsBtn.onclick = function() {
   expressionUsed.innerText = "= " + expression;
   expressionUsed.id = "expressionUsed";
   expressionMemory.appendChild(expressionUsed);
+  expressionMemory.lastChild.scrollIntoView();
   expressionUsed.onclick = function() {
     for (i = expressionUsed.innerText.length - 1; i >= 0; i--) {
       let char = expressionUsed.innerText.charAt(i);
@@ -85,6 +85,7 @@ equalsBtn.onclick = function() {
   let result = operate(expression);
   expressionUsed.innerText = expression + " = " + result;
   expressionMemory.style.overflowY = "scroll";
+
   expressionDisplay.innerText = result
   expression = expressionDisplay.innerText;
   for (i = 0; i <= expression.length; i++) {
