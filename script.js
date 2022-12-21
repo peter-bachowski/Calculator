@@ -15,9 +15,18 @@ for (i = 0; i < buttonElements.length; i++) {
         expressionDisplay.innerText += "";
       }
       else {
-        expressionDisplay.innerText += document.getElementById(this.id).innerText + " ";
-        dotPressed = true;
-        equalsPressed = false;
+        let expression = expressionDisplay.innerText;
+        let lastChar = expression.charAt(expression.length - 1);
+        if (isNaN(lastChar) || lastChar === "") {
+          expressionDisplay.innerText += "0" + document.getElementById(this.id).innerText;
+          dotPressed = true;
+          equalsPressed = false;
+        }
+        else {
+          expressionDisplay.innerText += document.getElementById(this.id).innerText;
+          dotPressed = true;
+          equalsPressed = false;
+        }
       }
     }
     else {
@@ -55,11 +64,13 @@ negativeBtn.onclick = function() {
   if (isNaN(expression.charAt(expression.length - 1)) === false) {
     for (i = expression.length - 1; i >= 0; i--) {
       let char = expression.charAt(i);
-      if (char === "+" || char === "-" || char === "×" || char === "÷") {
+      if ((char === "+" || char === "-" || char === "×" || char === "÷") && expression.charAt(i - 1) != null) {
         let lastNum = scanSecondNum(i, expression);
         expressionDisplay.innerText = expression.slice(0, i + 1) + "(" + -lastNum + ")";
+        return;
       }
     }
+    expressionDisplay.innerText = -parseFloat(expression);
   }
 }
 
@@ -121,13 +132,28 @@ function scanSecondNum(position, expression) {
   for (k = position + 1; k < expression.length; k++) {
     let char = expression.charAt(k);
     if (char === "(") {
-      return parseFloat(expression.slice(position + 2, expression.length - 1));
+      k += 1;
     }
     if (char === "+" || char === "-" || char === "×" || char === "÷") {
-      return parseFloat(expression.slice(position + 1, k));
+      if (expression.charAt(position + 1) === "(") {
+        return parseFloat(expression.slice(position + 2, k - 1));
+      }
+      else {
+        return parseFloat(expression.slice(position + 1, k));
+      }
     }
   }
-  return parseFloat(expression.slice(position + 1, expression.length));
+  if (expression.charAt(position + 1) === "(") {
+    if (expression.charAt(k - 1) === ")") {
+      return parseFloat(expression.slice(position + 2, expression.length - 1));
+    }
+    else {
+      return parseFloat(expression.slice(position + 2, expression.length));
+    }
+  }
+  else {
+    return parseFloat(expression.slice(position + 1, expression.length));
+  }
 }
 
 function operate(expression) {
@@ -180,7 +206,12 @@ function operate(expression) {
       else if (char === "-") {
         result = firstNum - secondNum;
       }
-      expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
+      if (expression.charAt(position + 1) === "(") {
+        expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
+      }
+      else {
+        expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
+      }
       position = -1;
     }
     else {
