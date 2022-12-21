@@ -1,5 +1,5 @@
 const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
-  expressionDisplay = document.getElementById("expressionDisplay"), clearBtn = document.getElementById("clearBtn"), expressionMemory = document.getElementById("expressionMemory"),
+  expressionDisplay = document.getElementById("expressionDisplay"), clearBtn = document.getElementById("clearBtn"), expressionMemory = document.getElementById("expressionMemory"), clearMemBtn = document.getElementById("clearMemBtn"),
   negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"),
   dotBtn = document.getElementById("dot"), backBtn = document.getElementById("back");
 
@@ -36,23 +36,31 @@ function clear() {
   dotPressed = false;
 }
 
+function clearMemory() {
+  while (expressionMemory.firstChild) {
+    expressionMemory.removeChild(expressionMemory.firstChild)
+  }
+}
+
 clearBtn.onclick = function() {
   clear()
 }
 
+clearMemBtn.onclick = function() {
+  clearMemory()
+}
+
 negativeBtn.onclick = function() {
   let expression = expressionDisplay.innerText;
-  for (i = 0; i <= expression.length - 1; i++) {
-    let char = expression.charAt(i);
-    if (char === "+" || char === "-" || char === "×" || char === "÷") {
-      if (i === 0) {
-        continue;
+  if (isNaN(expression.charAt(expression.length - 1)) === false) {
+    for (i = expression.length - 1; i >= 0; i--) {
+      let char = expression.charAt(i);
+      if (char === "+" || char === "-" || char === "×" || char === "÷") {
+        let lastNum = scanSecondNum(i, expression);
+        expressionDisplay.innerText = expression.slice(0, i + 1) + "(" + -lastNum + ")";
       }
-      expressionDisplay.innerText += "-";
-      return;
     }
   }
-  expressionDisplay.innerText = -parseFloat(expressionDisplay.innerText);
 }
 
 backBtn.onclick = function() {
@@ -112,8 +120,11 @@ function scanFirstNum(position, expression) {
 function scanSecondNum(position, expression) {
   for (k = position + 1; k < expression.length; k++) {
     let char = expression.charAt(k);
+    if (char === "(") {
+      return parseFloat(expression.slice(position + 2, expression.length - 1));
+    }
     if (char === "+" || char === "-" || char === "×" || char === "÷") {
-      return parseFloat(expression.slice(position + 1, k))
+      return parseFloat(expression.slice(position + 1, k));
     }
   }
   return parseFloat(expression.slice(position + 1, expression.length));
