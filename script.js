@@ -90,6 +90,7 @@ equalsBtn.onclick = function() {
   const expressionUsed = document.createElement("div");
   expressionUsed.innerText = "= " + expression;
   expressionUsed.id = "expressionUsed";
+  expressionUsed.style.paddingLeft = "5px";
   expressionMemory.appendChild(expressionUsed);
   expressionMemory.lastChild.scrollIntoView();
   expressionUsed.onclick = function() {
