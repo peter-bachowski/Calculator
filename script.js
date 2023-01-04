@@ -30,7 +30,9 @@ for (i = 0; i < buttonElements.length; i++) {
       }
     }
     else {
-      expressionDisplay.innerText += document.getElementById(this.id).innerText;
+      if (this.id != "back" && this.id != "equals") {
+        expressionDisplay.innerText += document.getElementById(this.id).innerText;
+      }
       equalsPressed = false;
       if (this.className === "operator") {
         dotBtn.setAttribute("id", "dot");
@@ -40,16 +42,31 @@ for (i = 0; i < buttonElements.length; i++) {
   }
 }
 
-function clear() {
-  expressionDisplay.innerText = null;
-  dotPressed = false;
-}
 
-function clearMemory() {
-  while (expressionMemory.firstChild) {
-    expressionMemory.removeChild(expressionMemory.firstChild)
+//listeners
+document.addEventListener("keydown", (event) => {
+  let key = event.key;
+  if (isNaN(key) === false || key === "." || key === "+" || key === "-") {
+    expressionDisplay.innerText += key;
   }
-}
+  else if (key === "*") {
+    expressionDisplay.innerText += "×";
+  }
+  else if (key === "/") {
+    expressionDisplay.innerText += "÷";
+  }
+  else if (key === "Backspace") {
+    backSpace();
+  }
+  else if (key === "Enter") {
+    equals();
+  }
+});
+
+backBtn.addEventListener("click", backSpace);
+
+equalsBtn.addEventListener("click", equalsFcn);
+
 
 clearBtn.onclick = function() {
   clear()
@@ -74,7 +91,23 @@ negativeBtn.onclick = function() {
   }
 }
 
-backBtn.onclick = function() {
+equalsBtn.onclick = function() {
+
+}
+
+//functions
+function clear() {
+  expressionDisplay.innerText = null;
+  dotPressed = false;
+}
+
+function clearMemory() {
+  while (expressionMemory.firstChild) {
+    expressionMemory.removeChild(expressionMemory.firstChild)
+  }
+}
+
+function backSpace() {
   let expression = expressionDisplay.innerText;
   let char = expression.slice(expression.length - 1, expression.length);
   expression = expression.slice(0, expression.length - 1);
@@ -85,7 +118,7 @@ backBtn.onclick = function() {
   equalsPressed = false;
 }
 
-equalsBtn.onclick = function() {
+function equalsFcn() {
   let expression = expressionDisplay.innerText;
   const expressionUsed = document.createElement("div");
   expressionUsed.innerText = "= " + expression;
