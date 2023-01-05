@@ -6,38 +6,46 @@ const buttonElements = document.querySelectorAll("button"), zeroBtn = document.g
 let equalsPressed = false, dotPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
+  document.addEventListener("keydown", (event) => {
+    //let key = event.key;
+    btnFcn(this);
+  });
   buttonElements[i].onclick = function() {
-    if (equalsPressed === true && this.className === "num" && this.id != "negative") {
-      clear();
-    }
-    if (this.id === "dot") {
-      if (dotPressed === true) {
-        expressionDisplay.innerText += "";
-      }
-      else {
-        let expression = expressionDisplay.innerText;
-        let lastChar = expression.charAt(expression.length - 1);
-        if (isNaN(lastChar) || lastChar === "") {
-          expressionDisplay.innerText += "0" + document.getElementById(this.id).innerText;
-          dotPressed = true;
-          equalsPressed = false;
-        }
-        else {
-          expressionDisplay.innerText += document.getElementById(this.id).innerText;
-          dotPressed = true;
-          equalsPressed = false;
-        }
-      }
+    btnFcn(this);
+  }
+}
+
+function btnFcn(element) {
+  if (equalsPressed === true && this.className === "num" && element.id != "negative") {
+    clear();
+  }
+  if (element.id === "dot") {
+    if (dotPressed === true) {
+      expressionDisplay.innerText += "";
     }
     else {
-      if (this.id != "back" && this.id != "equals") {
-        expressionDisplay.innerText += document.getElementById(this.id).innerText;
+      let expression = expressionDisplay.innerText;
+      let lastChar = expression.charAt(expression.length - 1);
+      if (isNaN(lastChar) || lastChar === "") {
+        expressionDisplay.innerText += "0" + document.getElementById(element.id).innerText;
+        dotPressed = true;
+        equalsPressed = false;
       }
-      equalsPressed = false;
-      if (this.className === "operator") {
-        dotBtn.setAttribute("id", "dot");
-        dotPressed = false;
+      else {
+        expressionDisplay.innerText += document.getElementById(element.id).innerText;
+        dotPressed = true;
+        equalsPressed = false;
       }
+    }
+  }
+  else {
+    if (element.id != "back" && element.id != "equals") {
+      expressionDisplay.innerText += document.getElementById(element.id).innerText;
+    }
+    equalsPressed = false;
+    if (element.className === "operator") {
+      dotBtn.setAttribute("id", "dot");
+      dotPressed = false;
     }
   }
 }
@@ -59,7 +67,7 @@ document.addEventListener("keydown", (event) => {
     backSpace();
   }
   else if (key === "Enter") {
-    equals();
+    equalsFcn();
   }
 });
 
@@ -68,6 +76,7 @@ backBtn.addEventListener("click", backSpace);
 equalsBtn.addEventListener("click", equalsFcn);
 
 
+//onclick button functions
 clearBtn.onclick = function() {
   clear()
 }
