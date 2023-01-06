@@ -6,17 +6,13 @@ const buttonElements = document.querySelectorAll("button"), zeroBtn = document.g
 let equalsPressed = false, dotPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
-  document.addEventListener("keydown", (event) => {
-    //let key = event.key;
-    btnFcn(this);
-  });
   buttonElements[i].onclick = function() {
     btnFcn(this);
   }
 }
 
 function btnFcn(element) {
-  if (equalsPressed === true && this.className === "num" && element.id != "negative") {
+  if (equalsPressed === true && element.className === "num" && element.id != "negative") {
     clear();
   }
   if (element.id === "dot") {
@@ -54,6 +50,24 @@ function btnFcn(element) {
 //listeners
 document.addEventListener("keydown", (event) => {
   let key = event.key;
+  if (key === "Enter") {
+    equalsFcn();
+    return;
+  }
+  else if (key === "Backspace") {
+    backSpaceFcn();
+    return;
+  }
+  for (i = 0; i < buttonElements.length; i++) {
+    if (key === buttonElements[i].innerText || (key === "*" && buttonElements[i].id === "multiply") || (key === "/" && buttonElements[i].id === "divide")) {
+      btnFcn(buttonElements[i]);
+      break;
+    }
+  }
+});
+
+/*document.addEventListener("keydown", (event) => {
+  let key = event.key;
   if (isNaN(key) === false || key === "." || key === "+" || key === "-") {
     expressionDisplay.innerText += key;
   }
@@ -69,24 +83,35 @@ document.addEventListener("keydown", (event) => {
   else if (key === "Enter") {
     equalsFcn();
   }
-});
+});*/
 
-backBtn.addEventListener("click", backSpace);
+backBtn.addEventListener("click", backSpaceFcn);
 
 equalsBtn.addEventListener("click", equalsFcn);
 
 
 //onclick button functions
 clearBtn.onclick = function() {
-  clear()
+  clear();
 }
 
 clearMemBtn.onclick = function() {
-  clearMemory()
+  clearMemory();
 }
 
 negativeBtn.onclick = function() {
   let expression = expressionDisplay.innerText;
+  if (isNaN(expression) === false) {
+    expressionDisplay.innerText = -Math.round(parseFloat(expression) * 100000000) / 100000000;
+    return;
+  }
+  if (expression.charAt(expression.length - 1) === ")") {
+    for (i = expression.length - 2; i >= 0; i--) {
+      if (expression.charAt(i) === "-") {
+        expressionDisplay.innerText = expression.slice(0, i - 1) + expression.slice(i + 1, expression.length - 1);
+      }
+    }
+  }
   if (isNaN(expression.charAt(expression.length - 1)) === false) {
     for (i = expression.length - 1; i >= 0; i--) {
       let char = expression.charAt(i);
@@ -98,10 +123,6 @@ negativeBtn.onclick = function() {
     }
     expressionDisplay.innerText = -parseFloat(expression);
   }
-}
-
-equalsBtn.onclick = function() {
-
 }
 
 //functions
@@ -116,7 +137,7 @@ function clearMemory() {
   }
 }
 
-function backSpace() {
+function backSpaceFcn() {
   let expression = expressionDisplay.innerText;
   let char = expression.slice(expression.length - 1, expression.length);
   expression = expression.slice(0, expression.length - 1);

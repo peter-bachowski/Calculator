@@ -45,7 +45,7 @@ body, html {
 }
 
 #expressionDisplay {
-  height: 60px;
+  height: 80px;
   width: 100%;
   font-size: 35px;
   display: flex;
@@ -54,6 +54,7 @@ body, html {
   background-color: white;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
+  overflow-x: auto;
 }
 
 #numContainer {
