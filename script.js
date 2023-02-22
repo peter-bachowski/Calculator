@@ -1,42 +1,55 @@
-const buttonElements = document.querySelectorAll("button"), zeroBtn = document.getElementById("zero"),
-  expressionDisplay = document.getElementById("expressionDisplay"), clearBtn = document.getElementById("clearBtn"), expressionMemory = document.getElementById("expressionMemory"), clearMemBtn = document.getElementById("clearMemBtn"),
-  negativeBtn = document.getElementById("negative"), equalsBtn = document.getElementById("equals"),
-  dotBtn = document.getElementById("dot"), backBtn = document.getElementById("back");
+const buttonElements = document.querySelectorAll("button"),
+  zeroBtn = document.getElementById("zero"),
+  expressionDisplay = document.getElementById("expressionDisplay"),
+  clearBtn = document.getElementById("clearBtn"),
+  expressionMemory = document.getElementById("expressionMemory"),
+  clearMemBtn = document.getElementById("clearMemBtn"),
+  negativeBtn = document.getElementById("negative"),
+  equalsBtn = document.getElementById("equals"),
+  dotBtn = document.getElementById("dot"),
+  backBtn = document.getElementById("back");
 
-let equalsPressed = false, dotPressed = false;
+let equalsPressed = false,
+  dotPressed = false;
 
 for (i = 0; i < buttonElements.length; i++) {
-  buttonElements[i].onclick = function() {
+  buttonElements[i].onclick = function () {
     btnFcn(this);
-  }
+  };
 }
 
 function btnFcn(element) {
-  if (equalsPressed === true && element.className === "num" && element.id != "negative") {
+  if (
+    equalsPressed === true &&
+    element.className === "num" &&
+    element.id != "negative"
+  ) {
     clear();
   }
   if (element.id === "dot") {
     if (dotPressed === true) {
       expressionDisplay.innerText += "";
-    }
-    else {
+    } else {
       let expression = expressionDisplay.innerText;
       let lastChar = expression.charAt(expression.length - 1);
       if (isNaN(lastChar) || lastChar === "") {
-        expressionDisplay.innerText += "0" + document.getElementById(element.id).innerText;
+        expressionDisplay.innerText +=
+          "0" + document.getElementById(element.id).innerText;
         dotPressed = true;
         equalsPressed = false;
-      }
-      else {
-        expressionDisplay.innerText += document.getElementById(element.id).innerText;
+      } else {
+        expressionDisplay.innerText += document.getElementById(
+          element.id
+        ).innerText;
         dotPressed = true;
         equalsPressed = false;
       }
     }
-  }
-  else {
+  } else {
     if (element.id != "back" && element.id != "equals") {
-      expressionDisplay.innerText += document.getElementById(element.id).innerText;
+      expressionDisplay.innerText += document.getElementById(
+        element.id
+      ).innerText;
     }
     equalsPressed = false;
     if (element.className === "operator") {
@@ -46,20 +59,22 @@ function btnFcn(element) {
   }
 }
 
-
 //listeners
 document.addEventListener("keydown", (event) => {
   let key = event.key;
   if (key === "Enter") {
     equalsFcn();
     return;
-  }
-  else if (key === "Backspace") {
+  } else if (key === "Backspace") {
     backSpaceFcn();
     return;
   }
   for (i = 0; i < buttonElements.length; i++) {
-    if (key === buttonElements[i].innerText || (key === "*" && buttonElements[i].id === "multiply") || (key === "/" && buttonElements[i].id === "divide")) {
+    if (
+      key === buttonElements[i].innerText ||
+      (key === "*" && buttonElements[i].id === "multiply") ||
+      (key === "/" && buttonElements[i].id === "divide")
+    ) {
       btnFcn(buttonElements[i]);
       break;
     }
@@ -89,41 +104,47 @@ backBtn.addEventListener("click", backSpaceFcn);
 
 equalsBtn.addEventListener("click", equalsFcn);
 
-
 //onclick button functions
-clearBtn.onclick = function() {
+clearBtn.onclick = function () {
   clear();
-}
+};
 
-clearMemBtn.onclick = function() {
+clearMemBtn.onclick = function () {
   clearMemory();
-}
+};
 
-negativeBtn.onclick = function() {
+negativeBtn.onclick = function () {
   let expression = expressionDisplay.innerText;
   if (isNaN(expression) === false) {
-    expressionDisplay.innerText = -Math.round(parseFloat(expression) * 100000000) / 100000000;
+    expressionDisplay.innerText =
+      -Math.round(parseFloat(expression) * 100000000) / 100000000;
     return;
   }
   if (expression.charAt(expression.length - 1) === ")") {
     for (i = expression.length - 2; i >= 0; i--) {
       if (expression.charAt(i) === "-") {
-        expressionDisplay.innerText = expression.slice(0, i - 1) + expression.slice(i + 1, expression.length - 1);
+        expressionDisplay.innerText =
+          expression.slice(0, i - 1) +
+          expression.slice(i + 1, expression.length - 1);
       }
     }
   }
   if (isNaN(expression.charAt(expression.length - 1)) === false) {
     for (i = expression.length - 1; i >= 0; i--) {
       let char = expression.charAt(i);
-      if ((char === "+" || char === "-" || char === "×" || char === "÷") && expression.charAt(i - 1) != null) {
+      if (
+        (char === "+" || char === "-" || char === "×" || char === "÷") &&
+        expression.charAt(i - 1) != null
+      ) {
         let lastNum = scanSecondNum(i, expression);
-        expressionDisplay.innerText = expression.slice(0, i + 1) + "(" + -lastNum + ")";
+        expressionDisplay.innerText =
+          expression.slice(0, i + 1) + "(" + -lastNum + ")";
         return;
       }
     }
     expressionDisplay.innerText = -parseFloat(expression);
   }
-}
+};
 
 //functions
 function clear() {
@@ -133,7 +154,7 @@ function clear() {
 
 function clearMemory() {
   while (expressionMemory.firstChild) {
-    expressionMemory.removeChild(expressionMemory.firstChild)
+    expressionMemory.removeChild(expressionMemory.firstChild);
   }
 }
 
@@ -156,20 +177,20 @@ function equalsFcn() {
   expressionUsed.style.paddingLeft = "5px";
   expressionMemory.appendChild(expressionUsed);
   expressionMemory.lastChild.scrollIntoView();
-  expressionUsed.onclick = function() {
+  expressionUsed.onclick = function () {
     for (i = expressionUsed.innerText.length - 1; i >= 0; i--) {
       let char = expressionUsed.innerText.charAt(i);
       if (char === "=") {
         expressionDisplay.innerText = expressionUsed.innerText.slice(0, i - 1);
       }
     }
-  }
+  };
 
   let result = operate(expression);
   expressionUsed.innerText = expression + " = " + result;
   expressionMemory.style.overflowY = "scroll";
 
-  expressionDisplay.innerText = result
+  expressionDisplay.innerText = result;
   expression = expressionDisplay.innerText;
   for (i = 0; i <= expression.length; i++) {
     if (expression.charAt(i) === ".") {
@@ -182,7 +203,10 @@ function equalsFcn() {
 function scanFirstNum(position, expression) {
   for (j = position - 1; j >= 0; j--) {
     let char = expression.charAt(j);
-    if (j != 0 && (char === "+" || char === "-" || char === "×" || char === "÷")) {
+    if (
+      j != 0 &&
+      (char === "+" || char === "-" || char === "×" || char === "÷")
+    ) {
       if (expression.charAt(j - 1) === "e") {
         continue;
       }
@@ -201,8 +225,7 @@ function scanSecondNum(position, expression) {
     if (char === "+" || char === "-" || char === "×" || char === "÷") {
       if (expression.charAt(position + 1) === "(") {
         return parseFloat(expression.slice(position + 2, k - 1));
-      }
-      else {
+      } else {
         return parseFloat(expression.slice(position + 1, k));
       }
     }
@@ -210,47 +233,50 @@ function scanSecondNum(position, expression) {
   if (expression.charAt(position + 1) === "(") {
     if (expression.charAt(k - 1) === ")") {
       return parseFloat(expression.slice(position + 2, expression.length - 1));
-    }
-    else {
+    } else {
       return parseFloat(expression.slice(position + 2, expression.length));
     }
-  }
-  else {
+  } else {
     return parseFloat(expression.slice(position + 1, expression.length));
   }
 }
 
 function operate(expression) {
-  let secondNum = 0, firstNum = 0, result = 0, hasOperator = true;
-  for (position = 0; position < expression.length; position++) { //first for loop searches the expression for multiplication or division
+  let secondNum = 0,
+    firstNum = 0,
+    result = 0,
+    hasOperator = true;
+  for (position = 0; position < expression.length; position++) {
+    //first for loop searches the expression for multiplication or division
     let char = expression.charAt(position);
     if (char === "×" || char === "÷") {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
 
       if (expression.charAt(position + 1) === "-") {
-        secondNum = -scanSecondNum(position + 1, expression)
-      }
-      else {
+        secondNum = -scanSecondNum(position + 1, expression);
+      } else {
         secondNum = scanSecondNum(position, expression);
       }
       if (char === "×") {
         result = firstNum * secondNum;
-      }
-      else if (char === "÷") {
+      } else if (char === "÷") {
         if (secondNum === 0) {
           return "Undefined";
         }
         result = firstNum / secondNum;
       }
-      expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
+      expression =
+        expression.substring(0, j + 1) +
+        result +
+        expression.substring(k, expression.length);
       position = -1;
-    }
-    else {
+    } else {
       hasOperator = false;
     }
   }
-  for (position = 0; position < expression.length; position++) {//second for loop searches the expression for addition or subtraction
+  for (position = 0; position < expression.length; position++) {
+    //second for loop searches the expression for addition or subtraction
     let char = expression.charAt(position);
     if (char === "e") {
       return result;
@@ -259,40 +285,34 @@ function operate(expression) {
       hasOperator = true;
       firstNum = scanFirstNum(position, expression);
       if (expression.charAt(position + 1) === "-") {
-        secondNum = -scanSecondNum(position + 1, expression)
-      }
-      else {
+        secondNum = -scanSecondNum(position + 1, expression);
+      } else {
         secondNum = scanSecondNum(position, expression);
       }
       if (char === "+") {
         result = firstNum + secondNum;
-      }
-      else if (char === "-") {
+      } else if (char === "-") {
         result = firstNum - secondNum;
       }
       if (expression.charAt(position + 1) === "(") {
-        expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
-      }
-      else {
-        expression = expression.substring(0, j + 1) + result + expression.substring(k, expression.length);
+        expression =
+          expression.substring(0, j + 1) +
+          result +
+          expression.substring(k, expression.length);
+      } else {
+        expression =
+          expression.substring(0, j + 1) +
+          result +
+          expression.substring(k, expression.length);
       }
       position = -1;
-    }
-    else {
+    } else {
       hasOperator = false;
     }
   }
   if (hasOperator === false) {
     return Math.round(parseFloat(expression) * 100000000) / 100000000;
-  }
-  else {
+  } else {
     return Math.round(result * 100000000) / 100000000;
   }
 }
-
-
-
-
-
-
-
